@@ -131,7 +131,8 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             //Add your EXEC output here
-             // Log that EXEC interrupt has started
+            
+            // Log that EXEC interrupt has started
             execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", EXEC system call initiated\n";
             current_time += duration_intr;
 
@@ -150,13 +151,11 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             // Update system status
             system_status += "time: " + std::to_string(current_time) + "; EXEC invoked -> New program loaded: " + program_name + "\n";
             system_status += print_PCB(current, wait_queue) + "\n";
-
-
+            
             ///////////////////////////////////////////////////////////////////////////////////////////
 
 
             std::ifstream exec_trace_file(program_name + ".txt");
-
             std::vector<std::string> exec_traces;
             std::string exec_trace;
             while(std::getline(exec_trace_file, exec_trace)) {
@@ -165,6 +164,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             //With the exec's trace (i.e. trace of external program), run the exec (HINT: think recursion)
+            
         if(exec_trace_file.is_open()) {
             std::string exec_trace;
 
@@ -190,8 +190,6 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             system_status += exec_status;
             current_time = exec_end_time;
         }
-
-
 
             ///////////////////////////////////////////////////////////////////////////////////////////
 
