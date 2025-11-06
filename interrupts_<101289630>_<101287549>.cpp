@@ -65,8 +65,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             // Log system status
             system_status += "time: " + std::to_string(current_time) + "; current trace: FORK, " + std::to_string(duration_intr) + "\n";
             system_status += print_PCB(current, wait_queue) + "\n";
-        }
-
+            
             ///////////////////////////////////////////////////////////////////////////////////////////
 
             //The following loop helps you do 2 things:
