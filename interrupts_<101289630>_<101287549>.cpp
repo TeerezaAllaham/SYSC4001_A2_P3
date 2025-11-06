@@ -52,6 +52,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             
             ///////////////////////////////////////////////////////////////////////////////////////////
             //Add your FORK output here
+            
             // Log the FORK ISR action to activate the "cloning PCB" event in the execution file.
             // duration_intr represents how long the FORK interrupt service routine lasts.
             execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", cloning PCB\n";
@@ -110,8 +111,12 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             ///////////////////////////////////////////////////////////////////////////////////////////
             //With the child's trace, run the child (HINT: think recursion)
 
-
-
+            
+            auto [child_exec, child_status, child_time] = simulate_trace(child_trace, current_time, vectors, delays, external_files, current, wait_queue);
+            execution += child_exec; // Append the child's execution log 
+            system_status += child_status; // Append the child's system status log 
+            current_time = child_time; // Update the global simulation time to the time returned after the child finishes
+            
             ///////////////////////////////////////////////////////////////////////////////////////////
 
 
