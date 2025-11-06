@@ -6,7 +6,11 @@
  */
 
 #include "interrupts_<101289630>_<101287549>.hpp"
-
+#include <fstream>
+#include <tuple>
+#include <iostream>
+#include <vector>
+#include <string>
 std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string> trace_file, int time, std::vector<std::string> vectors, std::vector<int> delays, std::vector<external_file> external_files, PCB current, std::vector<PCB> wait_queue) {
 
     std::string trace;      //!< string to store single line of trace file
@@ -162,7 +166,6 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             ///////////////////////////////////////////////////////////////////////////////////////////
             //With the exec's trace (i.e. trace of external program), run the exec (HINT: think recursion)
         if(exec_trace_file.is_open()) {
-            std::vector<std::string> exec_traces;
             std::string exec_trace;
 
             // Read the external program's trace into a vector
