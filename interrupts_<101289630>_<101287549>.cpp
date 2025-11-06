@@ -51,13 +51,13 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             ///////////////////////////////////////////////////////////////////////////////////////////
             //Add your FORK output here
         else if(activity == "FORK") {
-            auto [intr, time] = intr_boilerplate(curr_time, 2, 10, vectors); // 
+            auto [intr, time] = intr_boilerplate(current_time, 2, 10, vectors); // 
             execution += intr;
-            curr_time = time;
+            current_time = time;
         
             // Log FORK ISR 
-            execution += std::to_string(curr_time) + ", " + std::to_string(duration_intr) + ", cloning PCB\n";
-            curr_time += duration_intr;
+            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", cloning PCB\n";
+            current_time += duration_intr;
         
             // Create child PCB
             PCB child(current.PID + 1, current.PID, current.program_name, current.size, -1);
@@ -67,7 +67,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             current = child;                   // run child
         
             // Log system status
-            system_status += "time: " + std::to_string(curr_time) + "; current trace: FORK, " + std::to_string(duration_intr) + "\n";
+            system_status += "time: " + std::to_string(current_time) + "; current trace: FORK, " + std::to_string(duration_intr) + "\n";
             system_status += print_PCB(current, wait_queue) + "\n";
         }
 
