@@ -52,18 +52,23 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             
             ///////////////////////////////////////////////////////////////////////////////////////////
             //Add your FORK output here
+            // Log the FORK ISR action to activate the "cloning PCB" event in the execution file.
+            // duration_intr represents how long the FORK interrupt service routine lasts.
             execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", cloning PCB\n";
-            current_time += duration_intr;
+            current_time += duration_intr; // Increase current_time by the FORK duration
         
             // Create child PCB
+            // PID = parent PID + 1, PPID = parent PID, same program name and size for the clone.
             PCB child(current.PID + 1, current.PID, current.program_name, current.size, -1);
-            allocate_memory(&child);
+            allocate_memory(&child); // Allocate a memory partition for the child process
         
-            wait_queue.push_back(current);     // parent waiting
+            wait_queue.push_back(current);     // Add the parent process into the waiting queue since the child
             current = child;                   // run child
         
             // Log system status
+            // This records the time and the current trace being executed
             system_status += "time: " + std::to_string(current_time) + "; current trace: FORK, " + std::to_string(duration_intr) + "\n";
+            // Append the printed PCB table to the system status output showing both parent in the wait queue
             system_status += print_PCB(current, wait_queue) + "\n";
             
             ///////////////////////////////////////////////////////////////////////////////////////////
