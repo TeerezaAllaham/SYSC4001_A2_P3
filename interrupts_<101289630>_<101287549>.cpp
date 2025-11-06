@@ -5,7 +5,7 @@
  *
  */
 
-#include<interrupts.hpp>
+#include "interrupts_<101289630>_<101287549>.hpp"
 
 std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string> trace_file, int time, std::vector<std::string> vectors, std::vector<int> delays, std::vector<external_file> external_files, PCB current, std::vector<PCB> wait_queue) {
 
@@ -127,7 +127,25 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             //Add your EXEC output here
+             // Log that EXEC interrupt has started
+            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", EXEC system call initiated\n";
+            current_time += duration_intr;
 
+            // Simulate loading the new program into memory
+            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", Loading new program: " + program_name + "\n";
+            current_time += duration_intr;
+
+            // Simulate replacing current process image
+            execution += std::to_string(current_time) + ", 1, Replacing current process image with " + program_name + "\n";
+            current_time += 1;
+
+            // Simulate IRET to return from interrupt
+            execution += std::to_string(current_time) + ", 1, IRET\n";
+            current_time += 1;
+
+            // Update system status
+            system_status += "time: " + std::to_string(current_time) + "; EXEC invoked -> New program loaded: " + program_name + "\n";
+            system_status += print_PCB(current, wait_queue) + "\n";
 
 
             ///////////////////////////////////////////////////////////////////////////////////////////
@@ -143,6 +161,32 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             //With the exec's trace (i.e. trace of external program), run the exec (HINT: think recursion)
+        if(exec_trace_file.is_open()) {
+            std::vector<std::string> exec_traces;
+            std::string exec_trace;
+
+            // Read the external program's trace into a vector
+            while(std::getline(exec_trace_file, exec_trace)) {
+                exec_traces.push_back(exec_trace);
+            }
+            exec_trace_file.close();
+
+            // Recursively simulate the exec program trace
+            auto [exec_output, exec_status, exec_end_time] = simulate_trace(
+                exec_traces,         // the external program trace
+                current_time,        // start time
+                vectors,
+                delays,
+                external_files,
+                current,             // current PCB
+                wait_queue
+            );
+
+            // Append recursive output to main execution logs
+            execution += exec_output;
+            system_status += exec_status;
+            current_time = exec_end_time;
+        }
 
 
 
