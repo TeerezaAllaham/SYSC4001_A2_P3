@@ -44,18 +44,14 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             execution +=  std::to_string(current_time) + ", 1, IRET\n";
             current_time += 1;
         } else if(activity == "FORK") {
+            // Trigger the interrupt boilerplate for vector 2 and implements FORK system call
+            // This simulates switching to kernel mode, saving context, and loading ISR address
             auto [intr, time] = intr_boilerplate(current_time, 2, 10, vectors);
             execution += intr;
             current_time = time;
-        }
+            
             ///////////////////////////////////////////////////////////////////////////////////////////
             //Add your FORK output here
-        else if(activity == "FORK") {
-            auto [intr, time] = intr_boilerplate(current_time, 2, 10, vectors); // 
-            execution += intr;
-            current_time = time;
-        
-            // Log FORK ISR 
             execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", cloning PCB\n";
             current_time += duration_intr;
         
