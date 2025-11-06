@@ -111,7 +111,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             ///////////////////////////////////////////////////////////////////////////////////////////
             //With the child's trace, run the child (HINT: think recursion)
 
-            
+            // This call runs the simulate_trace() function using the collected trace lines belonging only to the child
             auto [child_exec, child_status, child_time] = simulate_trace(child_trace, current_time, vectors, delays, external_files, current, wait_queue);
             execution += child_exec; // Append the child's execution log 
             system_status += child_status; // Append the child's system status log 
