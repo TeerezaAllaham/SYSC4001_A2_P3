@@ -146,9 +146,12 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             auto [intr, time] = intr_boilerplate(current_time, 3, 10, vectors);
             execution += intr;
             current_time = time;
+            execution += intr;
 
-            // Log that EXEC ISR has started
-            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", EXEC system call initiated for " + program_name + "\n";
+            ///////////////////////////////////////////////////////////////////////////////////////////
+            //Add your EXEC output here
+             // Log that EXEC interrupt has started
+            execution += std::to_string(current_time) + ", " + std::to_string(duration_intr) + ", EXEC system call initiated\n";
             current_time += duration_intr;
 
             // Get size of program from external_files table
@@ -181,13 +184,11 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             // Update system status
             system_status += "time: " + std::to_string(current_time) + "; EXEC invoked -> New program loaded: " + current.program_name + " in Partition " + std::to_string(current.partition_number) + "\n";
             system_status += print_PCB(current, wait_queue) + "\n";
-
-
+            
             ///////////////////////////////////////////////////////////////////////////////////////////
 
 
             std::ifstream exec_trace_file(program_name + ".txt");
-
             std::vector<std::string> exec_traces;
             std::string exec_trace;
             while(std::getline(exec_trace_file, exec_trace)) {
@@ -196,31 +197,31 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
 
             ///////////////////////////////////////////////////////////////////////////////////////////
             //With the exec's trace (i.e. trace of external program), run the exec (HINT: think recursion)
-            if(exec_trace_file.is_open()) {
-                std::vector<std::string> exec_traces;
-                std::string exec_line;
-                while(std::getline(exec_trace_file, exec_line)) {
-                    exec_traces.push_back(exec_line);
-                }
-                exec_trace_file.close();
+        if(exec_trace_file.is_open()) {
+            std::string exec_trace;
 
-                auto [exec_output, exec_status, exec_end_time] = simulate_trace(
-                    exec_traces,
-                    current_time,
-                    vectors,
-                    delays,
-                    external_files,
-                    current,
-                    wait_queue
-                );
-
-                // Append recursive logs
-                execution += exec_output;
-                system_status += exec_status;
-                current_time = exec_end_time;
-            } else {
-                std::cerr << "WARNING: Trace file for " << program_name << " not found.\n";
+            // Read the external program's trace into a vector
+            while(std::getline(exec_trace_file, exec_trace)) {
+                exec_traces.push_back(exec_trace);
             }
+            exec_trace_file.close();
+
+            // Recursively simulate the exec program trace
+            auto [exec_output, exec_status, exec_end_time] = simulate_trace(
+                exec_traces,         // the external program trace
+                current_time,        // start time
+                vectors,
+                delays,
+                external_files,
+                current,             // current PCB
+                wait_queue
+            );
+
+            // Append recursive output to main execution logs
+            execution += exec_output;
+            system_status += exec_status;
+            current_time = exec_end_time;
+        }
 
 
 
