@@ -1,0 +1,24 @@
+0, 1, switch to kernel mode
+1, 10, context saved
+11, 1, find vector 2 in memory position 0x0004
+12, 1, load address 0X0695 into the PC
+13, 10, FORK ISR triggered
+23, 1, switch to kernel mode
+24, 10, context saved
+34, 1, find vector 3 in memory position 0x0006
+35, 1, load address 0X042B into the PC
+23, 1, switch to kernel mode
+24, 10, context saved
+34, 1, find vector 3 in memory position 0x0006
+35, 1, load address 0X042B into the PC
+36, 20, EXEC system call initiated
+56, 150, Loading program program1 into Partition 4
+206, 1, IRET
+207, 100, CPU Burst
+307, 1, switch to kernel mode
+308, 10, context saved
+318, 1, find vector 5 in memory position 0x000A
+319, 1, load address 0X048B into the PC
+320, 211, SYSCALL ISR (ADD STEPS HERE)
+531, 1, IRET
+532, 50, CPU Burst
