@@ -1,0 +1,6 @@
+FORK, 17 //fork is called
+IF_CHILD, 0
+EXEC program1, 16 //exec is called by child
+IF_PARENT,0
+ENDIF, 0
+CPU, 205 //CPU burst being called after the conditionals

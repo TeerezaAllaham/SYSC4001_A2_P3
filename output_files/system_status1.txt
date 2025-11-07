@@ -1,0 +1,43 @@
+time: 30; current trace: FORK, 17
++------------------------------------------------------+
+| PID |program name |partition number | size |   state |
++------------------------------------------------------+
+|   1 |        init |               5 |    1 | running |
+|   0 |        init |               6 |    1 | waiting |
++------------------------------------------------------+
+
+time: 210; EXEC invoked -> New program loaded: program1 in Partition 4
++------------------------------------------------------+
+| PID |program name |partition number | size |   state |
++------------------------------------------------------+
+|   1 |    program1 |               4 |   10 | running |
+|   0 |        init |               6 |    1 | waiting |
++------------------------------------------------------+
+
+time: 238; current trace: FORK, 15
++------------------------------------------------------+
+| PID |program name |partition number | size |   state |
++------------------------------------------------------+
+|   2 |    program1 |               3 |   10 | running |
+|   0 |        init |               6 |    1 | waiting |
+|   1 |    program1 |               4 |   10 | waiting |
++------------------------------------------------------+
+
+time: 510; EXEC invoked -> New program loaded: program2 in Partition 2
++------------------------------------------------------+
+| PID |program name |partition number | size |   state |
++------------------------------------------------------+
+|   2 |    program2 |               2 |   15 | running |
+|   0 |        init |               6 |    1 | waiting |
+|   1 |    program1 |               4 |   10 | waiting |
++------------------------------------------------------+
+
+time: 835; EXEC invoked -> New program loaded: program2 in Partition 3
++------------------------------------------------------+
+| PID |program name |partition number | size |   state |
++------------------------------------------------------+
+|   2 |    program2 |               3 |   15 | running |
+|   0 |        init |               6 |    1 | waiting |
+|   1 |    program1 |               4 |   10 | waiting |
++------------------------------------------------------+
+
