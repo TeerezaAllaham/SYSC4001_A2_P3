@@ -72,7 +72,7 @@ std::tuple<std::string, std::string, int> simulate_trace(std::vector<std::string
             // Add parent to waiting queue
             wait_queue.push_back(current);
 
-            // Switch context to child process (child runs first)
+            // Switch context to child process 
             current = child;
 
             // Log system status
